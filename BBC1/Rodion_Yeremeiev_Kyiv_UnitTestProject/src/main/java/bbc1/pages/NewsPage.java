@@ -6,9 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class NewsPage extends BasePage {
@@ -88,13 +85,13 @@ public class NewsPage extends BasePage {
 //        driver.findElement(By.xpath(FORM_CONTACT_INFO_INPUT + "'" + name + "')]")).sendKeys(values.get(name));
 //    }
 
-    public void sendStory(Map<String, String> values) {
+    public void sendStory(Map<String, String> values, boolean isDoNotPublishChecked, boolean isAcceptTermsChecked) {
         driver.findElement(By.xpath(CORONA_VIRUS_BUTTON)).click();
         driver.findElement(By.xpath(YOUR_CORONA_VIRUS_STORIES)).click();
         driver.findElement(By.xpath(CONTACT_BBC_BUTTON)).click();
         driver.findElement(By.xpath(SEND_US_STORY_LINK)).click();
 
-        form.fillForm(values);
+        form.fillForm(values, isDoNotPublishChecked, isAcceptTermsChecked);
 //        driver.findElement(By.xpath(FORM_INPUT_STORY)).clear();
 //        driver.findElement(By.xpath(FORM_INPUT_STORY)).sendKeys("some hard-coded character sequence");
 //

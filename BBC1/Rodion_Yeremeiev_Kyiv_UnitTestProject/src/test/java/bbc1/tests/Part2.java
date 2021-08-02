@@ -1,22 +1,8 @@
 package bbc1.tests;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import bbc1.pages.StorySubmitFrom;
-
-import static io.github.bonigarcia.wdm.WebDriverManager.chromedriver;
 
 public class Part2 extends BaseTest {
     private static final String BBC_URL = "https://www.bbc.com/";
@@ -65,11 +51,6 @@ public class Part2 extends BaseTest {
 
     private static final String FORM_CONTACT_INFO_INPUT = "//input[@placeholder='";
 
-    Map<String, String> values = Stream.of(
-        new String[][]{{"Name", "Bob"},
-                       {"Email address", "invalidAdress"},
-                       {"Contact number", "555-3258-11"},
-                       {"Location", "Tokyo"}}).collect(Collectors.toMap(p -> p[0], p -> p[1]));
 //    @BeforeTest
 //    public void profileSetUp() {
 //        chromedriver().setup();
@@ -90,103 +71,32 @@ public class Part2 extends BaseTest {
 
     @Test
     public void testFour() {
-        getNewsPage().sendStory(values);
+        getNewsPage().sendStory(TestData.formDataIncorrectEmail, true, true);
         getNewsPage().implicitWait(360);
         Assert.assertTrue(getNewsPage().getErrorMessage().getText().contains("Email address is invalid"));
     }
 
     @Test
     public void testFive() {
-        driver.findElement(By.xpath(CORONA_VIRUS_BUTTON)).click();
-        driver.findElement(By.xpath(YOUR_CORONA_VIRUS_STORIES)).click();
-        driver.findElement(By.xpath(CONTACT_BBC_BUTTON)).click();
-        driver.findElement(By.xpath(SEND_US_STORY_LINK)).click();
-
-        driver.findElement(By.xpath(FORM_INPUT_NAME)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_NAME)).sendKeys("Bob");
-
-        driver.findElement(By.xpath(FORM_INPUT_EMAIL)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_EMAIL)).sendKeys("adress@mail.com");
-
-        driver.findElement(By.xpath(FORM_INPUT_CONTACT_NUMBER)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_CONTACT_NUMBER)).sendKeys("555-3258-11");
-
-        driver.findElement(By.xpath(FORM_INPUT_LOCATION)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_LOCATION)).sendKeys("Tokyo");
-
-        driver.findElement(By.xpath(FORM_DONT_PUBLISH_CHECKBOX)).click();
-        driver.findElement(By.xpath(FORM_ACCEPT_TERMS_CHECKBOX)).click();
-
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-//        driver.findElement(By.xpath(MODAL_POP_UP_CLOSE_BUTTON)).click();
-//
-        driver.findElement(By.xpath(FORM_SUBMIT_BUTTON)).click();
-
-        Assert.assertTrue(driver.findElement(By.xpath(FORM_ERROR_MESSAGE)).isDisplayed());
+        getNewsPage().sendStory(TestData.formDataNoStory, true, true);
+        getNewsPage().implicitWait(360);
+        Assert.assertTrue(getNewsPage().getErrorMessage().getText().contains("can't be blank"));
     }
 
     @Test
     public void testSix() {
-        driver.findElement(By.xpath(CORONA_VIRUS_BUTTON)).click();
-        driver.findElement(By.xpath(YOUR_CORONA_VIRUS_STORIES)).click();
-        driver.findElement(By.xpath(CONTACT_BBC_BUTTON)).click();
-        driver.findElement(By.xpath(SEND_US_STORY_LINK)).click();
-
-        driver.findElement(By.xpath(FORM_INPUT_STORY)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_STORY)).sendKeys("some hard-coded character sequence");
-
-        driver.findElement(By.xpath(FORM_INPUT_EMAIL)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_EMAIL)).sendKeys("adress@mail.com");
-
-        driver.findElement(By.xpath(FORM_INPUT_CONTACT_NUMBER)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_CONTACT_NUMBER)).sendKeys("555-3258-11");
-
-        driver.findElement(By.xpath(FORM_INPUT_LOCATION)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_LOCATION)).sendKeys("Tokyo");
-
-        driver.findElement(By.xpath(FORM_DONT_PUBLISH_CHECKBOX)).click();
-        driver.findElement(By.xpath(FORM_ACCEPT_TERMS_CHECKBOX)).click();
-
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-        driver.findElement(By.xpath(MODAL_POP_UP_CLOSE_BUTTON)).click();
-
-        driver.findElement(By.xpath(FORM_SUBMIT_BUTTON)).click();
-
-        Assert.assertTrue(driver.findElement(By.xpath(FORM_ERROR_MESSAGE)).isDisplayed());
+        getNewsPage().sendStory(TestData.formDataNoNameInput, true, true);
+        getNewsPage().implicitWait(360);
+        Assert.assertTrue(getNewsPage().getErrorMessage().getText().contains("can't be blank"));
     }
 
     @Test
     public void testSeven() {
-        driver.findElement(By.xpath(CORONA_VIRUS_BUTTON)).click();
-        driver.findElement(By.xpath(YOUR_CORONA_VIRUS_STORIES)).click();
-        driver.findElement(By.xpath(CONTACT_BBC_BUTTON)).click();
-        driver.findElement(By.xpath(SEND_US_STORY_LINK)).click();
+        getNewsPage().sendStory(TestData.formDataCorrectInput, true, false);
+        getNewsPage().implicitWait(360);
+        getNewsPage().waitForVisibilityOfElement(60,getNewsPage().getErrorMessage());
+        System.out.println(getNewsPage().getErrorMessage().getText());
+        Assert.assertTrue(getNewsPage().getErrorMessage().getText().equals("must be accepted"));
 
-        driver.findElement(By.xpath(FORM_INPUT_STORY)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_STORY)).sendKeys("some hard-coded character sequence");
-
-        driver.findElement(By.xpath(FORM_INPUT_NAME)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_NAME)).sendKeys("Bob");
-
-        driver.findElement(By.xpath(FORM_INPUT_EMAIL)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_EMAIL)).sendKeys("adress@mail.com");
-
-        driver.findElement(By.xpath(FORM_INPUT_CONTACT_NUMBER)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_CONTACT_NUMBER)).sendKeys("555-3258-11");
-
-        driver.findElement(By.xpath(FORM_INPUT_LOCATION)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_LOCATION)).sendKeys("Tokyo");
-
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-        driver.findElement(By.xpath(MODAL_POP_UP_CLOSE_BUTTON)).click();
-
-        driver.findElement(By.xpath(FORM_DONT_PUBLISH_CHECKBOX)).click();
-
-        driver.findElement(By.xpath(FORM_SUBMIT_BUTTON)).click();
-
-        Assert.assertTrue(driver.findElement(By.xpath(FORM_ERROR_MESSAGE)).isDisplayed());
     }
 }

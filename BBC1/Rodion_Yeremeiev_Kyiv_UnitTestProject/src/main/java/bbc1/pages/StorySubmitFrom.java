@@ -3,9 +3,7 @@ package bbc1.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
 public class StorySubmitFrom  {
@@ -54,9 +52,9 @@ public class StorySubmitFrom  {
     }
 
 
-    public void fillForm(Map<String, String> values) {
+    public void fillForm(Map<String, String> values, boolean isDoNotPublishChecked, boolean isAcceptTermsChecked) {
         driver.findElement(By.xpath(FORM_INPUT_STORY)).clear();
-        driver.findElement(By.xpath(FORM_INPUT_STORY)).sendKeys("some hard-coded character sequence");
+        driver.findElement(By.xpath(FORM_INPUT_STORY)).sendKeys(values.get("Story"));
 
 //        formInputByName("Name");
         driver.findElement(By.xpath(FORM_CONTACT_INFO_INPUT + "'" + "Name" + "')]")).clear();
@@ -73,8 +71,13 @@ public class StorySubmitFrom  {
         driver.findElement(By.xpath(FORM_CONTACT_INFO_INPUT + "'" + "Location" + "')]")).clear();
         driver.findElement(By.xpath(FORM_CONTACT_INFO_INPUT + "'" + "Location" + "')]")).sendKeys(values.get("Location"));
 
-        driver.findElement(By.xpath(FORM_DONT_PUBLISH_CHECKBOX)).click();
-        driver.findElement(By.xpath(FORM_ACCEPT_TERMS_CHECKBOX)).click();
+        if(isDoNotPublishChecked) {
+            driver.findElement(By.xpath(FORM_DONT_PUBLISH_CHECKBOX)).click();
+        }
+
+        if(isAcceptTermsChecked) {
+            driver.findElement(By.xpath(FORM_ACCEPT_TERMS_CHECKBOX)).click();
+        }
         driver.findElement(By.xpath(FORM_SUBMIT_BUTTON)).click();
 
     }
