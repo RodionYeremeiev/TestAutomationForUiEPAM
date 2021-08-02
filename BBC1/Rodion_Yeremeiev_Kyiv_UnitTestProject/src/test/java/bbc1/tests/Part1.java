@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Part1 extends BaseTest {
+public class
+Part1 extends BaseTest {
 
     private static final String ARTICLE_TEXT_EXPECTED = "Death toll mounts in raging South Africa riots";
     private static final String SEARCH_BY_CATEGORY_EXPECTED_ARTICLE_TITLE = "Africa Eye: Africa Eye: Retirement Hell";

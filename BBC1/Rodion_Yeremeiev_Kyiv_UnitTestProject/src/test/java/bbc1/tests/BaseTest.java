@@ -3,6 +3,7 @@ package bbc1.tests;
 import bbc1.pages.HomePage;
 import bbc1.pages.NewsPage;
 import bbc1.pages.SearchResultPage;
+import bbc1.pages.StorySubmitFrom;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -14,6 +15,7 @@ import static io.github.bonigarcia.wdm.WebDriverManager.chromedriver;
 public class BaseTest {
 
     private static final String BBC_URL = "https://www.bbc.com/";
+
     private WebDriver driver;
 
     @BeforeTest
@@ -49,4 +51,5 @@ public class BaseTest {
     public SearchResultPage getSearchResultPage() {
         return new SearchResultPage(getDriver());
     }
+
 }
